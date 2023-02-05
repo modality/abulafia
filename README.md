@@ -8,9 +8,9 @@ Time was, the [Abulafia](http://random-generator.com) wiki had ton of tables fil
 
 > From [Bows](http://localhost:8080/index.php/Bows): "A longbow made of hickory wood. The grip is wrapped in beige wool. The bowstring is actually a single wire made of finely-crafted Living Metal. Accompanying the bow is a quiver of oiled red-violet calfskin with rabbit fur trim. It contains blunt arrows with shafts of ironwood wood in its natural color and fletching of salmon feathers."
 
-Unfortunately, it was a victim of its own success. It became very slow to use, either due to traffic or database load. There were few safeguards prevent errors, infinite loops, and misuse. I don't remember when it stopped working. But it's alive again, now.
+Unfortunately, it was a victim of its own success. It became very slow to use, either due to traffic or database load. There were few safeguards prevent errors, infinite loops, and misuse. I don't remember when it stopped working.
 
-With a lot of luck, I have puzzled out how to stand up a Mediawiki instance, import a data dump I found on Archive.org, and even hack [the Abulafia Parser plugin](https://github.com/daveyounce/AbulafiaParser) to get random generation working again. I have never understood PHP and don't intend to, so "working on my machine" is as far as I intend to take this project. If you want to host this thing publically, go with my blessing!
+With a lot of luck, I have puzzled out how to stand up a MediaWiki instance, import a data dump I found on Archive.org, and even hack [the Abulafia Parser plugin](https://github.com/daveyounce/AbulafiaParser) to get random generation working again. I have never understood PHP and don't intend to, so "working on my machine" is as far as I intend to take this project. If you want to host this thing publically, go with my blessing!
 
 Here are steps to get it running locally, which assumes a little familiarity with Github and Docker.
 
@@ -25,12 +25,12 @@ Here are steps to get it running locally, which assumes a little familiarity wit
 4. Decompress the Abulafia archive. Inside, there are multiple wikidumps. Pick one and decompress.
    - I used the most recent one: `random_generatorcom-20200225-wikidump.7z`.
 5. Inside the decompressed dump, there should be a folder called `images` and a file called `random_generatorcom-20200225-history.xml`. Rename the XML file to `history.xml`. Copy the `images` folder and the `history.xml` file into your cloned repo.
-6. On the command line, in the repo directory, deploy the stack file. This will take a couple minutes to download and build the containers. Eventually, in Docker desktop you should see two running containers: one for MediaWikia and one for its MariaDB database.
+6. On the command line, in the repo directory, deploy the stack file. This will take a couple minutes to download and build the containers. Eventually, in Docker Desktop you should see two running containers: one for MediaWiki and one for its MariaDB database.
    - `docker stack deploy -c stack.yml mediawiki`
 
 ### Usage pt. 2 - wiki configuration
 
-7. Visit http://localhost:8080 and go through the steps to install and configure Mediawiki. To configure the database, use the following variables (these are also found in `stack.yml`).
+7. Visit http://localhost:8080 and go through the steps to install and configure MediaWiki. To configure the database, use the following variables (these are also found in `stack.yml`).
    - host or URL: change from `localhost` to `database`
    * database name: `my_wiki`
    * user: `wikiuser`
@@ -48,7 +48,7 @@ Here are steps to get it running locally, which assumes a little familiarity wit
 
 ### Usage pt. 3 - data import
 
-12. From docker desktop interface, click on the containers tab. Find the runnning container with a name like `mediawiki_mediawiki` and click the CLI icon, which looks like this: `>_`. It should open up a terminal inside the container.
+12. From the Docker Desktop interface, click on the Containers tab. Find the runnning container with a name like `mediawiki_mediawiki` and click the CLI icon, which looks like this: `>_`. It should open up a terminal inside the container.
 13. Run `pwd` to ensure that you're in the `/var/www/html` directory. Run `ls` and ensure that both `LocalSettings.php` and `history.xml` are here.
 14. Run the following to import your xml file: `php maintenance/importDump.php < history.xml`. this will take a while but eventually end with
     ```
